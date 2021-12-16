@@ -4,11 +4,11 @@ Get full access to the [Hypixel Api](https://api.hypixel.net/) easily due to man
 [releases_shield]: https://img.shields.io/github/v/release/Kokhaviel/HypixelAPI?include_prereleases
 [releases]: https://github.com/Kokhaviel/HypixelAPI/releases/latest/
 [license_shield]: https://img.shields.io/github/license/Kokhaviel/HypixelAPI
-[license]: https://github.com/Kokhaviel/HypixelAPI/blob/master/LICENSE
+[license]: https://github.com/Kokhaviel/HypixelAPI/blob/java/LICENSE
 [issues_shield]: https://img.shields.io/github/issues/Kokhaviel/HypixelAPI
 [issues]: https://github.com/Kokhaviel/HypixelAPI/issues
 [commits_shield]: https://img.shields.io/github/commit-activity/m/Kokhaviel/HypixelAPI
-[commits]: https://github.com/Kokhaviel/HypixelAPI/commits/master
+[commits]: https://github.com/Kokhaviel/HypixelAPI/commits/java
 [last_commit_shield]: https://img.shields.io/github/last-commit/Kokhaviel/HypixelAPI
 
 [![releases_shield][]][releases]

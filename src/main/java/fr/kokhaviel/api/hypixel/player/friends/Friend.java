@@ -19,6 +19,7 @@ package fr.kokhaviel.api.hypixel.player.friends;
 import com.google.gson.annotations.SerializedName;
 import fr.kokhaviel.api.hypixel.HypixelAPI;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
@@ -93,7 +94,7 @@ public class Friend {
 	 * @param key Your Hypixel API Key
 	 * @return Sender Username
 	 */
-	public String getSenderName(String key) throws MalformedURLException {
+	public String getSenderName(String key) throws IOException {
 		return new HypixelAPI(key).getPlayerData(UUID.fromString(
 				sender.replaceFirst("(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5"))
 		).getPlayer().getDisplayName();
@@ -105,7 +106,7 @@ public class Friend {
 	 * @param key Your Hypixel API Key
 	 * @return Receiver Username
 	 */
-	public String getReceiverName(String key) throws MalformedURLException {
+	public String getReceiverName(String key) throws IOException {
 		return new HypixelAPI(key).getPlayerData(UUID.fromString(
 				receiver.replaceFirst("(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5"))
 		).getPlayer().getDisplayName();

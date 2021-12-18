@@ -35,8 +35,12 @@ import fr.kokhaviel.api.hypixel.status.Status;
 import fr.kokhaviel.api.hypixel.util.IOUtils;
 import fr.kokhaviel.api.hypixel.util.exceptions.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.TimeZone;
@@ -49,6 +53,18 @@ import java.util.UUID;
  * @since 1.0
  */
 public class HypixelAPI {
+
+	public static String cacheDir;
+
+	static {
+		try {
+			Cache.createCacheIfNotExists();
+			Cache.clearOneHourCache();
+			cacheDir = System.getProperty("user.home") + "/.hypixel-api/";
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * The Hypixel API Key, allows you to obtain Hypixel Statistics
@@ -84,11 +100,16 @@ public class HypixelAPI {
 	 * @return Key Info for Specified in {@link HypixelAPI#HypixelAPI(String)}
 	 * @since 1.0
 	 */
-	public KeyData getKey() throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/key?key=";
-		String hypixelUrl = baseUrl + key;
-
-		return this.get(hypixelUrl, KeyData.class);
+	public KeyData getKey() throws IOException {
+		final String fileName = "key-" + key;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, KeyData.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/key?key=";
+			String hypixelUrl = baseUrl + key;
+			return this.fetchAndGet(hypixelUrl, KeyData.class, fileName);
+		}
 	}
 
 	/**
@@ -98,11 +119,16 @@ public class HypixelAPI {
 	 * @return Key Info for Api Key in param
 	 * @since 1.0
 	 */
-	public KeyData getKey(String apiKey) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/key?key=";
-		String hypixelUrl = baseUrl + apiKey;
-
-		return this.get(hypixelUrl, KeyData.class);
+	public KeyData getKey(String apiKey) throws IOException {
+		final String fileName = "key-" + apiKey;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, KeyData.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/key?key=";
+			String hypixelUrl = baseUrl + apiKey;
+			return this.fetchAndGet(hypixelUrl, KeyData.class, fileName);
+		}
 	}
 
 	/**
@@ -113,11 +139,16 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getPlayerData(UUID)
 	 * @since 1.0
 	 */
-	public PlayerData getPlayerData(String player) throws MalformedURLException {
-		String baseHypixelUrl = "https://api.hypixel.net/player?uuid=";
-		String hypixelURL = baseHypixelUrl + getMojangUUID(player).getUuid() + "&key=" + key;
-
-		return this.get(hypixelURL, PlayerData.class);
+	public PlayerData getPlayerData(String player) throws IOException {
+		final String fileName = "player-" + getMojangUUID(player).getUuid();
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, PlayerData.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/player?uuid=";
+			String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, PlayerData.class, fileName);
+		}
 	}
 
 	/**
@@ -128,11 +159,16 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getPlayerData(String)
 	 * @since 1.0
 	 */
-	public PlayerData getPlayerData(UUID uuid) throws MalformedURLException {
-		String baseHypixelUrl = "https://api.hypixel.net/player?uuid=";
-		String hypixelURL = baseHypixelUrl + uuid + "&key=" + key;
-
-		return this.get(hypixelURL, PlayerData.class);
+	public PlayerData getPlayerData(UUID uuid) throws IOException {
+		final String fileName = "player-" + uuid;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, PlayerData.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/player?uuid=";
+			String hypixelUrl = baseUrl +  uuid + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, PlayerData.class, fileName);
+		}
 	}
 
 	public Level getLevel(String player) {
@@ -158,11 +194,16 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getFriends(UUID)
 	 * @since 1.2
 	 */
-	public Friends getFriends(String player) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/friends?uuid=";
-		String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
-
-		return this.get(hypixelUrl, Friends.class);
+	public Friends getFriends(String player) throws IOException {
+		final String fileName = "friends-" + getMojangUUID(player).getUuid();
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, Friends.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/friends?uuid=";
+			String hypixelUrl = baseUrl +  getMojangUUID(player).getUuid() + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, Friends.class, fileName);
+		}
 	}
 
 	/**
@@ -173,11 +214,16 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getFriends(String)
 	 * @since 1.2
 	 */
-	public Friends getFriends(UUID uuid) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/friends?uuid=";
-		String hypixelUrl = baseUrl + uuid + "&key=" + key;
-
-		return this.get(hypixelUrl, Friends.class);
+	public Friends getFriends(UUID uuid) throws IOException {
+		final String fileName = "friends-" + uuid;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, Friends.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/friends?uuid=";
+			String hypixelUrl = baseUrl +  uuid + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, Friends.class, fileName);
+		}
 	}
 
 	/**
@@ -188,11 +234,16 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getRecentGames(UUID)
 	 * @since 1.3
 	 */
-	public RecentGames getRecentGames(String player) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/recentgames?uuid=";
-		String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
-
-		return this.get(hypixelUrl, RecentGames.class);
+	public RecentGames getRecentGames(String player) throws IOException {
+		final String fileName = "recent-" + getMojangUUID(player).getUuid();
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, RecentGames.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/recentgames?uuid=";
+			String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, RecentGames.class, fileName);
+		}
 	}
 
 	/**
@@ -203,11 +254,16 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getRecentGames(String)
 	 * @since 1.3
 	 */
-	public RecentGames getRecentGames(UUID uuid) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/recentgames?uuid=";
-		String hypixelUrl = baseUrl + uuid + "&key=" + key;
-
-		return this.get(hypixelUrl, RecentGames.class);
+	public RecentGames getRecentGames(UUID uuid) throws IOException {
+		final String fileName = "recent-" + uuid;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, RecentGames.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/recentgames?uuid=";
+			String hypixelUrl = baseUrl + uuid + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, RecentGames.class, fileName);
+		}
 	}
 
 	/**
@@ -217,11 +273,16 @@ public class HypixelAPI {
 	 * @return Status
 	 * @since 1.4
 	 */
-	public Status getStatus(String player) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/status?uuid=";
-		String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
-
-		return this.get(hypixelUrl, Status.class);
+	public Status getStatus(String player) throws IOException {
+		final String fileName = "status-" + getMojangUUID(player).getUuid();
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, Status.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/status?uuid=";
+			String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, Status.class, fileName);
+		}
 	}
 
 	/**
@@ -231,11 +292,16 @@ public class HypixelAPI {
 	 * @return Status
 	 * @since 1.4
 	 */
-	public Status getStatus(UUID uuid) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/status?uuid=";
-		String hypixelUrl = baseUrl + uuid + "&key=" + key;
-
-		return this.get(hypixelUrl, Status.class);
+	public Status getStatus(UUID uuid) throws IOException {
+		final String fileName = "status-" + uuid;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, Status.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/status?uuid=";
+			String hypixelUrl = baseUrl + uuid + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, Status.class, fileName);
+		}
 	}
 
 	/**
@@ -248,7 +314,7 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getGuildDataByName(String)
 	 * @since 2.0
 	 */
-	public GuildData getGuildData(String player) throws MalformedURLException {
+	public GuildData getGuildData(String player) throws IOException {
 		String baseUrl = "https://api.hypixel.net/guild?player=";
 
 		return getGuildData(getMojangUUID(player).getUuid(), baseUrl);
@@ -265,7 +331,7 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getGuildDataByName(String)
 	 * @since 2.0
 	 */
-	public GuildData getGuildData(UUID uuid) throws MalformedURLException {
+	public GuildData getGuildData(UUID uuid) throws IOException {
 		String baseUrl = "https://api.hypixel.net/guild?player=";
 
 		return getGuildData(uuid.toString(), baseUrl);
@@ -282,7 +348,7 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getGuildDataByName(String)
 	 * @since 2.0
 	 */
-	public GuildData getGuildDataByID(String id) throws MalformedURLException {
+	public GuildData getGuildDataByID(String id) throws IOException {
 		String baseUrl = "https://api.hypixel.net/guild?id=";
 		return getGuildData(id, baseUrl);
 	}
@@ -298,7 +364,7 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getGuildDataByID(String)
 	 * @since 2.0
 	 */
-	public GuildData getGuildDataByName(String guildName) throws MalformedURLException {
+	public GuildData getGuildDataByName(String guildName) throws IOException {
 		String baseUrl = "https://api.hypixel.net/guild?name=";
 		return getGuildData(guildName, baseUrl);
 	}
@@ -309,10 +375,15 @@ public class HypixelAPI {
 	 * @param guild Guild Name or ID
 	 * @return 2.0
 	 */
-	private GuildData getGuildData(String guild, String baseUrl) throws MalformedURLException {
-		String hypixelUrl = baseUrl + guild + "&key=" + key;
-
-		return this.get(hypixelUrl, GuildData.class);
+	private GuildData getGuildData(String guild, String baseUrl) throws IOException {
+		final String fileName = "guild-" + guild;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, GuildData.class);
+		} else {
+			String hypixelUrl = baseUrl + guild + "&key=" + key;
+			return this.fetchAndGet(hypixelUrl, GuildData.class, fileName);
+		}
 	}
 
 	/**
@@ -321,17 +392,14 @@ public class HypixelAPI {
 	 * @return Achievements Data
 	 * @since 3.0
 	 */
-	public fr.kokhaviel.api.hypixel.resources.achievements.Achievements getAchievementsData() {
-		String hypixelUrl = "https://api.hypixel.net/resources/achievements";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Achievements Data or Invalid Data : " + e.getMessage());
+	public fr.kokhaviel.api.hypixel.resources.achievements.Achievements getAchievementsData() throws IOException {
+		final String fileName = "achievements";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/resources/achievements";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new fr.kokhaviel.api.hypixel.resources.achievements.Achievements(hypixelObject);
+		return new fr.kokhaviel.api.hypixel.resources.achievements.Achievements(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -340,17 +408,15 @@ public class HypixelAPI {
 	 * @return Challenges Data
 	 * @since 3.1
 	 */
-	public Challenges getChallengesData() {
-		String hypixelUrl = "https://api.hypixel.net/resources/challenges";
+	public Challenges getChallengesData() throws IOException {
 
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Challenges Data or Invalid Data : " + e.getMessage());
+		final String fileName = "challenges";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/resources/challenges";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Challenges(hypixelObject);
+		return new Challenges(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -359,17 +425,14 @@ public class HypixelAPI {
 	 * @return Challenges Data
 	 * @since 3.2
 	 */
-	public Quests getQuestsData() {
-		String hypixelUrl = "https://api.hypixel.net/resources/quests";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Quests Data or Invalid Data : " + e.getMessage());
+	public Quests getQuestsData() throws IOException {
+		final String fileName = "quests";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/resources/quests";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Quests(hypixelObject);
+		return new Quests(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -378,17 +441,14 @@ public class HypixelAPI {
 	 * @return Guilds Achievements Data
 	 * @since 3.3
 	 */
-	public fr.kokhaviel.api.hypixel.resources.guild.Achievements getGuildAchievementsData() {
-		String hypixelUrl = "https://api.hypixel.net/resources/guilds/achievements";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Guild Achievements Data or Invalid Data : " + e.getMessage());
+	public fr.kokhaviel.api.hypixel.resources.guild.Achievements getGuildAchievementsData() throws IOException {
+		final String fileName = "guild-achievements";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/resources/guilds/achievements";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new fr.kokhaviel.api.hypixel.resources.guild.Achievements(hypixelObject);
+		return new fr.kokhaviel.api.hypixel.resources.guild.Achievements(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -397,17 +457,14 @@ public class HypixelAPI {
 	 * @return Permissions Data
 	 * @since 3.4
 	 */
-	public Permissions getGuildsPermissions() {
-		String hypixelUrl = "https://api.hypixel.net/resources/guilds/permissions";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Guild Achievements Data or Invalid Data : " + e.getMessage());
+	public Permissions getGuildsPermissions() throws IOException {
+		final String fileName = "guild-permissions";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/resources/guilds/permissions";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Permissions(hypixelObject);
+		return new Permissions(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -415,17 +472,14 @@ public class HypixelAPI {
 	 * @return Skyblock Collections Data
 	 * @since 4.0
 	 */
-	public Collections getSkyblockCollectionsData() {
-		String hypixelUrl = "https://api.hypixel.net/resources/skyblock/collections";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Skyblock Collections Data or Invalid Data : " + e.getMessage());
+	public Collections getSkyblockCollectionsData() throws IOException {
+		final String fileName = "skyblock-collections";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/resources/skyblock/collections";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Collections(hypixelObject);
+		return new Collections(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -433,17 +487,14 @@ public class HypixelAPI {
 	 * @return Skills Data
 	 * @since 4.1
 	 */
-	public Skills getSkyblockSkillsData() {
-		String hypixelUrl = "https://api.hypixel.net/resources/skyblock/skills";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Skyblock Skills Data or Invalid Data : " + e.getMessage());
+	public Skills getSkyblockSkillsData() throws IOException {
+		final String fileName = "skyblock-skills";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/resources/skyblock/skills";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Skills(hypixelObject);
+		return new Skills(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -452,17 +503,14 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getActiveAuctions(int)
 	 * @since 4.2
 	 */
-	public Auctions getActiveAuctions() {
-		String hypixelUrl = "https://api.hypixel.net/skyblock/auctions";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Skyblock Auctions Data or Invalid Data : " + e.getMessage());
+	public Auctions getActiveAuctions() throws IOException {
+		final String fileName = "auctions-1";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/skyblock/auctions";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Auctions(hypixelObject, this);
+		return new Auctions(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -471,17 +519,14 @@ public class HypixelAPI {
 	 * @see HypixelAPI#getActiveAuctions()
 	 * @since 4.2
 	 */
-	public Auctions getActiveAuctions(int page) {
-		String hypixelUrl = "https://api.hypixel.net/skyblock/auctions?page=" + page;
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Skyblock Auctions Data or Invalid Data : " + e.getMessage());
+	public Auctions getActiveAuctions(int page) throws IOException {
+		final String fileName = "auctions-" + page;
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/skyblock/auctions?page=" + page;
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Auctions(hypixelObject, this);
+		return new Auctions(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -489,17 +534,14 @@ public class HypixelAPI {
 	 * @return Bazaar Data
 	 * @since 4.3
 	 */
-	public Bazaar getBazaarData() {
-		String hypixelUrl = "https://api.hypixel.net/skyblock/bazaar";
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Skyblock Bazaar Data or Invalid Data : " + e.getMessage());
+	public Bazaar getBazaarData() throws IOException {
+		final String fileName = "bazaar";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String hypixelUrl = "https://api.hypixel.net/skyblock/bazaar";
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Bazaar(hypixelObject);
+		return new Bazaar(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -508,18 +550,15 @@ public class HypixelAPI {
 	 * @return Skyblock Stats of the Player
 	 * @since 4.4
 	 */
-	public SkyblockProfiles getSkyblockData(String player) throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/skyblock/profiles?uuid=";
-		String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Skyblock Player Data or Invalid Data : " + e.getMessage());
+	public SkyblockProfiles getSkyblockData(String player) throws IOException {
+		final String fileName = "skyblock-stats-" + getMojangUUID(player).getUuid();
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String baseUrl = "https://api.hypixel.net/skyblock/profiles?uuid=";
+			String hypixelUrl = baseUrl + getMojangUUID(player).getUuid() + "&key=" + key;
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new SkyblockProfiles(hypixelObject);
+		return new SkyblockProfiles(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -527,18 +566,15 @@ public class HypixelAPI {
 	 * @return Boosters Data
 	 * @since 5.0
 	 */
-	public Boosters getActiveBoosters() {
-		String baseUrl = "https://api.hypixel.net/boosters?key=";
-		String hypixelUrl = baseUrl + key;
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Boosters Data or Invalid Data : " + e.getMessage());
+	public Boosters getActiveBoosters() throws IOException {
+		final String fileName = "bazaar";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String baseUrl = "https://api.hypixel.net/boosters?key=";
+			String hypixelUrl = baseUrl + key;
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Boosters(hypixelObject);
+		return new Boosters(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -546,18 +582,15 @@ public class HypixelAPI {
 	 * @return Players Count Data
 	 * @since 5.0
 	 */
-	public Counts getPlayerCounts() {
-		String baseUrl = "https://api.hypixel.net/counts?key=";
-		String hypixelUrl = baseUrl + key;
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Counts Data or Invalid Data : " + e.getMessage());
+	public Counts getPlayerCounts() throws IOException {
+		final String fileName = "bazaar";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String baseUrl = "https://api.hypixel.net/counts?key=";
+			String hypixelUrl = baseUrl + key;
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Counts(hypixelObject);
+		return new Counts(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -565,18 +598,15 @@ public class HypixelAPI {
 	 * @return Leaderboards Data
 	 * @since 5.0
 	 */
-	public Leaderboards getLeaderboardsData() {
-		String baseUrl = "https://api.hypixel.net/leaderboards?key=";
-		String hypixelUrl = baseUrl + key;
-
-		JsonObject hypixelObject;
-		try {
-			hypixelObject = IOUtils.readJson(new URL(hypixelUrl)).getAsJsonObject();
-		} catch(IllegalStateException | MalformedURLException e) {
-			throw new HypixelAPIException("Cannot Access Leaderboards Data or Invalid Data : " + e.getMessage());
+	public Leaderboards getLeaderboardsData() throws IOException {
+		final String fileName = "bazaar";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(!Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			String baseUrl = "https://api.hypixel.net/leaderboards?key=";
+			String hypixelUrl = baseUrl + key;
+			this.fetch(hypixelUrl, fileName);
 		}
-
-		return new Leaderboards(hypixelObject);
+		return new Leaderboards(IOUtils.readJson(new File(cacheDir + fileName)).getAsJsonObject());
 	}
 
 	/**
@@ -584,11 +614,16 @@ public class HypixelAPI {
 	 * @return Bans Data
 	 * @since 5.0
 	 */
-	public Bans getBansData() throws MalformedURLException {
-		String baseUrl = "https://api.hypixel.net/punishmentstats?key=";
-		String hypixelUrl = baseUrl + key;
-
-		return this.get(hypixelUrl, Bans.class);
+	public Bans getBansData() throws IOException {
+		final String fileName = "bans";
+		Cache.invalidateFiveMinutesCache(fileName);
+		if(Files.exists(Paths.get(cacheDir + fileName + ".json"))) {
+			return this.getFromCache(cacheDir + fileName, Bans.class);
+		} else {
+			String baseUrl = "https://api.hypixel.net/punishmentstats?key=";
+			String hypixelUrl = baseUrl + key;
+			return this.fetchAndGet(hypixelUrl, Bans.class, fileName);
+		}
 	}
 
 	/**
@@ -602,12 +637,27 @@ public class HypixelAPI {
 		String baseMojangUrl = "https://api.mojang.com/users/profiles/minecraft/";
 		String mojangUrl = baseMojangUrl + player;
 
-		return this.get(mojangUrl, MojangUUID.class);
+		return this.getNoCache(mojangUrl, MojangUUID.class);
 	}
 
-	private <T> T get(String url, Class<T> classOfT) throws IllegalStateException, MalformedURLException {
+	private <T> T getFromCache(String file, Class<T> classOfT) {
+		JsonObject hypixelObject = IOUtils.readJson(new File(file + ".json")).getAsJsonObject();
+		return GSON.fromJson(hypixelObject, classOfT);
+	}
+
+	private <T> T getNoCache(String url, Class<T> classOfT) throws IllegalStateException, MalformedURLException {
 		JsonObject hypixelObject = IOUtils.readJson(new URL(url)).getAsJsonObject();
 		return GSON.fromJson(hypixelObject, classOfT);
+	}
+
+	private <T> T fetchAndGet(String url, Class<T> classOfT, String name) throws IllegalStateException, IOException {
+		this.fetch(url, name);
+		return this.getFromCache(cacheDir + name, classOfT);
+	}
+
+	private void fetch(String url, String name) throws IOException {
+		JsonObject hypixelObject = IOUtils.readJson(new URL(url)).getAsJsonObject();
+		Cache.createCache(name, hypixelObject.toString());
 	}
 
 	@Override

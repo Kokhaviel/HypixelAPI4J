@@ -19,6 +19,7 @@ package fr.kokhaviel.api.hypixel.player;
 import fr.kokhaviel.api.hypixel.HypixelAPI;
 import fr.kokhaviel.api.hypixel.ILevel;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class Level {
@@ -31,15 +32,15 @@ public class Level {
 		this.player = player;
 	}
 
-	public int getNetworkLevel() throws MalformedURLException {
+	public int getNetworkLevel() throws IOException {
 		return ILevel.getNetworkLevel(hypixelAPI, player);
 	}
 
-	public int getExpToNextLevel() throws MalformedURLException {
+	public int getExpToNextLevel() throws IOException {
 		return ILevel.getExpToNextLevel(hypixelAPI, player);
 	}
 
-	public int getPercentageToNextLevel() throws MalformedURLException {
+	public int getPercentageToNextLevel() throws IOException {
 		return ILevel.getPercentageToNextLevel(hypixelAPI, player);
 	}
 

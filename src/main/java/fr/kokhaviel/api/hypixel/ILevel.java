@@ -16,6 +16,7 @@
 
 package fr.kokhaviel.api.hypixel;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
@@ -28,7 +29,7 @@ public interface ILevel {
 	 * @return Network Level Formatted
 	 * @since 1.1
 	 */
-	static double getExactNetworkLevel(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+	static double getExactNetworkLevel(HypixelAPI hypixelAPI, String player) throws IOException {
 		int exp = hypixelAPI.getPlayerData(player).getPlayer().getNetworkExperience();
 		double level = (Math.sqrt(exp + 15312.5) - (125 / Math.sqrt(2))) / (25 * Math.sqrt(2));
 		DecimalFormat df = new DecimalFormat();
@@ -42,7 +43,7 @@ public interface ILevel {
 	 * @return Number of Exp
 	 * @since 1.1
 	 */
-	static int getExpToNextLevel(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+	static int getExpToNextLevel(HypixelAPI hypixelAPI, String player) throws IOException {
 		int exp = hypixelAPI.getPlayerData(player).getPlayer().getNetworkExperience();
 		double nextLevel = Math.floor(ILevel.getNetworkLevel(hypixelAPI, player)) + 1;
 		int neededExp = (int) (Math.pow((25 * Math.sqrt(2) * nextLevel + (125 / Math.sqrt(2))), 2) - 15312.5);
@@ -56,7 +57,7 @@ public interface ILevel {
 	 * @return Network Level
 	 * @since 5.0
 	 */
-	static int getNetworkLevel(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+	static int getNetworkLevel(HypixelAPI hypixelAPI, String player) throws IOException {
 		return (int) Math.floor(getExactNetworkLevel(hypixelAPI, player));
 	}
 
@@ -66,7 +67,7 @@ public interface ILevel {
 	 * @return Progression Percentage
 	 * @since 5.0
 	 */
-	static int getPercentageToNextLevel(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+	static int getPercentageToNextLevel(HypixelAPI hypixelAPI, String player) throws IOException {
 		double exactLevel = ILevel.getExactNetworkLevel(hypixelAPI, player);
 		int level = ILevel.getNetworkLevel(hypixelAPI, player);
 

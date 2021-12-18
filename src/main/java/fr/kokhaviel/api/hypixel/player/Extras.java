@@ -18,8 +18,7 @@ package fr.kokhaviel.api.hypixel.player;
 
 import fr.kokhaviel.api.hypixel.HypixelAPI;
 
-import java.net.MalformedURLException;
-import java.text.DecimalFormat;
+import java.io.IOException;
 
 /**
  * Hypixel Player Extras Statistics
@@ -41,112 +40,112 @@ public class Extras {
 	/**
 	 * Get Arcade Extra Stats
 	 */
-	public ArcadeExtras getArcadeExtras() throws MalformedURLException {
+	public ArcadeExtras getArcadeExtras() throws IOException {
 		return new ArcadeExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Battle Ground Extra Stats
 	 */
-	public BattleGroundExtras getBattleGroundExtras() throws MalformedURLException {
+	public BattleGroundExtras getBattleGroundExtras() throws IOException {
 		return new BattleGroundExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Bedwars Extra Stats
 	 */
-	public BedwarsExtras getBedwarsExtras() throws MalformedURLException {
+	public BedwarsExtras getBedwarsExtras() throws IOException {
 		return new BedwarsExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Duels Extra Stats
 	 */
-	public DuelsExtras getDuelsExtras() throws MalformedURLException {
+	public DuelsExtras getDuelsExtras() throws IOException {
 		return new DuelsExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Ginger Bread Extra Stats
 	 */
-	public GingerBreadExtras getGingerBreadExtras() throws MalformedURLException {
+	public GingerBreadExtras getGingerBreadExtras() throws IOException {
 		return new GingerBreadExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Hunger Games Extra Stats
 	 */
-	public HungerGamesExtras getHungerGamesExtras() throws MalformedURLException {
+	public HungerGamesExtras getHungerGamesExtras() throws IOException {
 		return new HungerGamesExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get MCGO Extra Stats
 	 */
-	public MCGOExtras getMcgoExtras() throws MalformedURLException {
+	public MCGOExtras getMcgoExtras() throws IOException {
 		return new MCGOExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Mega Walls Extra Stats
 	 */
-	public MegaWallsExtras getMegaWallsExtras() throws MalformedURLException {
+	public MegaWallsExtras getMegaWallsExtras() throws IOException {
 		return new MegaWallsExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Murder Mystery Extra Stats
 	 */
-	public MurderMysteryExtras getMurderMysteryExtras() throws MalformedURLException {
+	public MurderMysteryExtras getMurderMysteryExtras() throws IOException {
 		return new MurderMysteryExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Pit Extra Stats
 	 */
-	public PitExtras getPitExtras() throws MalformedURLException {
+	public PitExtras getPitExtras() throws IOException {
 		return new PitExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Quake Extra Stats
 	 */
-	public QuakeExtras getQuakeExtras() throws MalformedURLException {
+	public QuakeExtras getQuakeExtras() throws IOException {
 		return new QuakeExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Skywars Extra Stats
 	 */
-	public SkywarsExtras getSkywarsExtras() throws MalformedURLException {
+	public SkywarsExtras getSkywarsExtras() throws IOException {
 		return new SkywarsExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Smash Extra Stats
 	 */
-	public SmashExtras getSmashExtras() throws MalformedURLException {
+	public SmashExtras getSmashExtras() throws IOException {
 		return new SmashExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get SpeedUHC Extra Stats
 	 */
-	public SpeedUHCExtras getSpeedUHCExtras() throws MalformedURLException {
+	public SpeedUHCExtras getSpeedUHCExtras() throws IOException {
 		return new SpeedUHCExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get UHC Extra Stats
 	 */
-	public UHCExtras getUHCExtras() throws MalformedURLException {
+	public UHCExtras getUHCExtras() throws IOException {
 		return new UHCExtras(hypixelAPI, player);
 	}
 
 	/**
 	 * Get Walls Extra Stats
 	 */
-	public WallsExtras getWallsExtras() throws MalformedURLException {
+	public WallsExtras getWallsExtras() throws IOException {
 		return new WallsExtras(hypixelAPI, player);
 	}
 
@@ -162,7 +161,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.Arcade arcade;
 
-		public ArcadeExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public ArcadeExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			arcade = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getArcade();
@@ -196,7 +195,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.BattleGround battleGround;
 
-		public BattleGroundExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public BattleGroundExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			battleGround = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getBattleGround();
@@ -237,7 +236,7 @@ public class Extras {
 		fr.kokhaviel.api.hypixel.games.Bedwars bedwars;
 
 
-		public BedwarsExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public BedwarsExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			bedwars = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getBedwars();
@@ -277,7 +276,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.Duels duels;
 
-		public DuelsExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public DuelsExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			duels = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getDuels();
@@ -310,7 +309,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.GingerBread gingerBread;
 
-		public GingerBreadExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public GingerBreadExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			gingerBread = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getGingerBread();
@@ -338,7 +337,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.HungerGames hungerGames;
 
-		public HungerGamesExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public HungerGamesExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			hungerGames = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getHungerGames();
@@ -364,7 +363,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.MCGO mcgo;
 
-		public MCGOExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public MCGOExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			mcgo = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getMcgo();
@@ -390,7 +389,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.MegaWalls megaWalls;
 
-		public MegaWallsExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public MegaWallsExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			megaWalls = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getMegaWalls();
@@ -423,7 +422,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.MurderMystery murderMystery;
 
-		public MurderMysteryExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public MurderMysteryExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			murderMystery = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getMurderMystery();
@@ -449,7 +448,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.Pit pit;
 
-		public PitExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public PitExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			pit = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getPit();
@@ -475,7 +474,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.Quake quake;
 
-		public QuakeExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public QuakeExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			quake = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getQuake();
@@ -501,7 +500,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.Skywars skywars;
 
-		public SkywarsExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public SkywarsExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			skywars = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getSkywars();
@@ -534,7 +533,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.Smash smash;
 
-		public SmashExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public SmashExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			smash = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getSmash();
@@ -567,7 +566,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.SpeedUHC speedUHC;
 
-		public SpeedUHCExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public SpeedUHCExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			speedUHC = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getSpeedUHC();
@@ -600,7 +599,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.UHC uhc;
 
-		public UHCExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public UHCExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			uhc = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getUhc();
@@ -626,7 +625,7 @@ public class Extras {
 		String player;
 		fr.kokhaviel.api.hypixel.games.Walls walls;
 
-		public WallsExtras(HypixelAPI hypixelAPI, String player) throws MalformedURLException {
+		public WallsExtras(HypixelAPI hypixelAPI, String player) throws IOException {
 			this.hypixelAPI = hypixelAPI;
 			this.player = player;
 			walls = hypixelAPI.getPlayerData(this.player).getPlayer().getStats().getWalls();

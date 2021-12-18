@@ -21,6 +21,8 @@ import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.HypixelAPI;
 import fr.kokhaviel.api.hypixel.util.exceptions.HypixelAPIException;
 
+import java.io.IOException;
+
 /**
  * Hypixel Skyblock Auctions Data
  * @author Kokhaviel
@@ -60,16 +62,14 @@ public class Auctions {
 	final int totalAuctions;
 	final long lastUpdate;
 	final JsonArray auctionsArray;
-	final HypixelAPI hypixelAPI;
 
-	public Auctions(JsonObject auctionsObject, HypixelAPI hypixelAPI) {
+	public Auctions(JsonObject auctionsObject) {
 		this.success = auctionsObject.get("success").getAsBoolean();
 		this.page = auctionsObject.get("page").getAsInt();
 		this.totalPages = auctionsObject.get("totalPages").getAsInt();
 		this.totalAuctions = auctionsObject.get("totalAuctions").getAsInt();
 		this.lastUpdate = auctionsObject.get("lastUpdated").getAsLong();
 		this.auctionsArray = auctionsObject.get("auctions").getAsJsonArray();
-		this.hypixelAPI = hypixelAPI;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class Auctions {
 	 * @param auctionNumber Auction Number
 	 * @return Request Auction Data
 	 */
-	public Auction getAuction(int auctionNumber) {
+	public Auction getAuction(int auctionNumber) throws IOException {
 		if(auctionNumber < 0) throw new HypixelAPIException("Auction Number Cannot Be Less Than 0");
 		else if(auctionNumber > 0 && auctionNumber < 999) return new Auction(auctionsArray.get(auctionNumber).getAsJsonObject());
 		else if(auctionNumber > 999) {

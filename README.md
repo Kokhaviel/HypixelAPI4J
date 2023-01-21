@@ -1,15 +1,15 @@
-#   HypixelAPI
+#   HypixelAPI4J
 Get full access to the [Hypixel Api](https://api.hypixel.net/) easily due to many utility classes !
 
-[releases_shield]: https://img.shields.io/github/v/release/Kokhaviel/HypixelAPI?include_prereleases
-[releases]: https://github.com/Kokhaviel/HypixelAPI/releases/latest/
-[license_shield]: https://img.shields.io/github/license/Kokhaviel/HypixelAPI
-[license]: https://github.com/Kokhaviel/HypixelAPI/blob/java/LICENSE
-[issues_shield]: https://img.shields.io/github/issues/Kokhaviel/HypixelAPI
-[issues]: https://github.com/Kokhaviel/HypixelAPI/issues
-[commits_shield]: https://img.shields.io/github/commit-activity/m/Kokhaviel/HypixelAPI
-[commits]: https://github.com/Kokhaviel/HypixelAPI/commits/java
-[last_commit_shield]: https://img.shields.io/github/last-commit/Kokhaviel/HypixelAPI
+[releases_shield]: https://img.shields.io/github/v/release/Kokhaviel/HypixelAPI4J?include_prereleases
+[releases]: https://github.com/Kokhaviel/HypixelAPI4J/releases/latest/
+[license_shield]: https://img.shields.io/github/license/Kokhaviel/HypixelAPI4J
+[license]: https://github.com/Kokhaviel/HypixelAPI4J/blob/java/LICENSE
+[issues_shield]: https://img.shields.io/github/issues/Kokhaviel/HypixelAPI4J
+[issues]: https://github.com/Kokhaviel/HypixelAPI4J/issues
+[commits_shield]: https://img.shields.io/github/commit-activity/m/Kokhaviel/HypixelAPI4J
+[commits]: https://github.com/Kokhaviel/HypixelAPI4J/commits/java
+[last_commit_shield]: https://img.shields.io/github/last-commit/Kokhaviel/HypixelAPI4J
 
 [![releases_shield][]][releases]
 [![license_shield][]][license]
@@ -18,7 +18,7 @@ Get full access to the [Hypixel Api](https://api.hypixel.net/) easily due to man
 [![last_commit_shield][]][commits]
 
 ## Downloads :
-Assets available on the [release](https://github.com/Kokhaviel/HypixelAPI/releases) page !
+Assets available on the [release](https://github.com/Kokhaviel/HypixelAPI4J/releases) page !
 
 ## Installation :
 ### Gradle :
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'com.github.Kokhaviel', name:'HypixelAPI', version:'master'
+    implementation group: 'com.github.Kokhaviel', name:'HypixelAPI4J', version:'master'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.7'
 }
 ```
@@ -47,7 +47,7 @@ dependencies {
     <dependencies>
         <dependency>
             <groupId>com.github.Kokhaviel</groupId>
-            <artifactId>HypixelAPI</artifactId>
+            <artifactId>HypixelAPI4J</artifactId>
             <version>master</version>
         </dependency>
      <dependency>

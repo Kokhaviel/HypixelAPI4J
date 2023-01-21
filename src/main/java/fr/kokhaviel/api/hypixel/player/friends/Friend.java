@@ -20,7 +20,6 @@ import com.google.gson.annotations.SerializedName;
 import fr.kokhaviel.api.hypixel.HypixelAPI;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.UUID;
 
 /**

@@ -33,7 +33,6 @@ import fr.kokhaviel.api.hypixel.resources.skyblock.*;
 import fr.kokhaviel.api.hypixel.server.*;
 import fr.kokhaviel.api.hypixel.status.Status;
 import fr.kokhaviel.api.hypixel.util.IOUtils;
-import fr.kokhaviel.api.hypixel.util.exceptions.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +51,7 @@ import java.util.UUID;
  * @author Kokhaviel
  * @since 1.0
  */
+@SuppressWarnings("unused")
 public class HypixelAPI {
 
 	public static String cacheDir;
@@ -169,10 +169,6 @@ public class HypixelAPI {
 			String hypixelUrl = baseUrl +  uuid + "&key=" + key;
 			return this.fetchAndGet(hypixelUrl, PlayerData.class, fileName);
 		}
-	}
-
-	public Level getLevel(String player) {
-		return new Level(this, player);
 	}
 
 	/**

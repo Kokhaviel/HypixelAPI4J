@@ -17,7 +17,6 @@
 package fr.kokhaviel.api.hypixel;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
 public interface ILevel {
@@ -29,8 +28,7 @@ public interface ILevel {
 	 * @return Network Level Formatted
 	 * @since 1.1
 	 */
-	static double getExactNetworkLevel(HypixelAPI hypixelAPI, String player) throws IOException {
-		int exp = hypixelAPI.getPlayerData(player).getPlayer().getNetworkExperience();
+	static double getExactNetworkLevel(long exp) {
 		double level = (Math.sqrt(exp + 15312.5) - (125 / Math.sqrt(2))) / (25 * Math.sqrt(2));
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
@@ -43,12 +41,11 @@ public interface ILevel {
 	 * @return Number of Exp
 	 * @since 1.1
 	 */
-	static int getExpToNextLevel(HypixelAPI hypixelAPI, String player) throws IOException {
-		int exp = hypixelAPI.getPlayerData(player).getPlayer().getNetworkExperience();
-		double nextLevel = Math.floor(ILevel.getNetworkLevel(hypixelAPI, player)) + 1;
+	static int getExpToNextLevel(long exp) throws IOException {
+		double nextLevel = Math.floor(ILevel.getNetworkLevel(exp)) + 1;
 		int neededExp = (int) (Math.pow((25 * Math.sqrt(2) * nextLevel + (125 / Math.sqrt(2))), 2) - 15312.5);
 
-		return (neededExp - exp);
+		return (int) (neededExp - exp);
 	}
 
 	/**
@@ -57,8 +54,8 @@ public interface ILevel {
 	 * @return Network Level
 	 * @since 5.0
 	 */
-	static int getNetworkLevel(HypixelAPI hypixelAPI, String player) throws IOException {
-		return (int) Math.floor(getExactNetworkLevel(hypixelAPI, player));
+	static int getNetworkLevel(long exp) throws IOException {
+		return (int) Math.floor(getExactNetworkLevel(exp));
 	}
 
 	/**
@@ -67,9 +64,9 @@ public interface ILevel {
 	 * @return Progression Percentage
 	 * @since 5.0
 	 */
-	static int getPercentageToNextLevel(HypixelAPI hypixelAPI, String player) throws IOException {
-		double exactLevel = ILevel.getExactNetworkLevel(hypixelAPI, player);
-		int level = ILevel.getNetworkLevel(hypixelAPI, player);
+	static int getPercentageToNextLevel(long exp) throws IOException {
+		double exactLevel = ILevel.getExactNetworkLevel(exp);
+		int level = ILevel.getNetworkLevel(exp);
 
 		double percentage = exactLevel - level;
 

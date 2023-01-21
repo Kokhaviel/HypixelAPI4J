@@ -625,6 +625,10 @@ public class PlayerData {
 			return medias;
 		}
 
+		public Level getLevel() {
+			return new Level(this.networkExperience);
+		}
+
 		@Override
 		public String toString() {
 			return "Player{" +

@@ -105,7 +105,7 @@ public class MegaWalls {
 	 * Total Time Played of the Player (in Minutes)
 	 */
 	@SerializedName("time_played")
-	int timepLayed = 0;
+	int timePlayed = 0;
 
 	/**
 	 * Total Meters Fallen by the Player
@@ -270,7 +270,7 @@ public class MegaWalls {
 	 * @return Time Played in Minutes
 	 */
 	public int getTimepLayed() {
-		return timepLayed;
+		return timePlayed;
 	}
 
 	/**
@@ -360,7 +360,7 @@ public class MegaWalls {
 				", cry='" + cry + '\'' +
 				", wins=" + wins +
 				", witherDamage=" + witherDamage +
-				", timepLayed=" + timepLayed +
+				", timepLayed=" + timePlayed +
 				", fallen=" + fallen +
 				", walked=" + walked +
 				", gamesPlayed=" + gamesPlayed +
